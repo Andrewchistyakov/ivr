@@ -4,15 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="script.js" defer></script>
     <title>my first app</title>
     <link rel="stylesheet" href="./style.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
   </head>
   <body>
     <h1>Hello world</h1>
-    <button>CLICK ME</button>
+    <button onclick="buttonHandler()">CLICK ME</button>
     <script>
         require('./render.js');
+        require('./main.js')
     </script>
   </body>
 </html>
