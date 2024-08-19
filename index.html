@@ -10,8 +10,15 @@
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
   </head>
   <body>
-    <h1>Hello world</h1>
-    <button onclick="buttonHandler()">CLICK ME</button>
+    <div>
+      <h2>Your tasks:</h2>
+      <ol id="task-list">
+
+      </ol>
+      
+      <input type="text" id="taskInput" placeholder="Your task">
+      <button id="submit-task" onclick="addTask()">Submit</button>
+    </div>
     <script>
         require('./render.js');
         require('./main.js')
