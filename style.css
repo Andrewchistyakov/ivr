@@ -72,9 +72,9 @@ body {
     color: #aaa;
 }
 
-input[type="text"] {
+.task-input-box {
     flex: 1;
-    width: calc(100% - 50px);
+    width: 300px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -92,6 +92,11 @@ button {
 
 button:hover {
     background-color: #218838;
+}
+
+.task-inputfield {
+    display: flex;
+    padding-right: 15px;
 }
 
 @media (max-width: 600px) {
