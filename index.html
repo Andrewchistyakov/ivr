@@ -10,6 +10,7 @@
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
   </head>
   <body>
+  <div class="todo-part">
     <div id="todo-list" class="todo-container">
       <h2>Your tasks:</h2>
       <ol id="task-list">
@@ -19,12 +20,13 @@
       <input type="text" id="taskInput" placeholder="Your task">
       <button id="submit-task" onclick="addTask()">Submit</button>
     </div>
-    <div class="todo-container">
+    <div class="done-container">
       <h2>Done tasks:</h2>
       <ul id="done-tasks"> 
-        
+
       </ul>
     </div>
+  </div>
     <script>
         require('./render.js');
         require('./main.js')
