@@ -31,6 +31,9 @@ const addTaskToDOM = function(text) {
     const taskToAdd = document.createElement("li");
     taskToAdd.textContent = text;
 
+    // adding css class to a task
+    taskToAdd.classList.add("todo-item");
+
     // creating a button to done tasks
     const doneButton = document.createElement('button'); 
     const doneList = document.getElementById('done-tasks'); 
@@ -38,6 +41,7 @@ const addTaskToDOM = function(text) {
     doneButton.onclick = () => {
         doneButton.remove(); // done tasks dont need a button
         taskToAdd.remove(); //removes the task
+        taskToAdd.classList.add("completed"); // adds css styles for completed tasks
         doneList.appendChild(taskToAdd); // adds the task to "done" list when clicked
         saveTaskToDoneLS(text); // transferring the task from "ready" local storage to "done"
     };
@@ -52,6 +56,10 @@ const addDoneTaskToDOM = function(text) {
     // creating a new <li> with out task
     const taskToAdd = document.createElement("li");
     taskToAdd.textContent = text;
+
+    // adding css class to a task
+    taskToAdd.classList.add("todo-item");
+    taskToAdd.classList.add("completed");
 
     // finally adding task to the list
     const doneTaskList = document.getElementById("done-tasks");
