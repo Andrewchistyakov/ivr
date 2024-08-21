@@ -108,6 +108,27 @@ button:hover {
     padding-right: 15px;
 }
 
+.est-t {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    background-color: #218838;
+    display: flex;
+    border: none;
+    border-radius: 4px;
+    padding-bottom: 1px;
+    padding-top: 3px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-bottom: 10px;
+    
+}
+
+#time-estimate {
+    margin-bottom: 10px;
+}
+
 @media (max-width: 600px) {
     .todo-container {
         width: 90%;
