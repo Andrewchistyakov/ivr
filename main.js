@@ -1,6 +1,6 @@
 const path = require('path');
 const url = require('url');
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 
 
 
@@ -22,7 +22,10 @@ function createWindow() {
 
     win.on('closed', () => win = null);
 
-
+    // // Listen for the reload event from the renderer process
+    // ipcMain.on('reload-page', () => {
+    //     mainWindow.webContents.reload();
+    // });
 }
 
 

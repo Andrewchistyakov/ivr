@@ -1,3 +1,10 @@
+// const { ipcRenderer } = require('electron'); 
+
+// // Function to reload the page
+// function reloadPage() {
+//     ipcRenderer.send('reload-page');
+// }
+
 // adds tasks from local storage when opening the app
 window.onload = function() {
     const readyTasks = JSON.parse(localStorage.getItem('readyTasks')) || [];
@@ -12,8 +19,11 @@ window.onload = function() {
 };
 
 const addTask = function() {
+    //getting user input
     const taskInput = document.getElementById("taskInput");
     const taskText = taskInput.value;
+    const estTimeInp = document.getElementById("time-estimate");
+    const estTime = estTimeInp.value;
     
 
     if (taskText === '') { // checking if the submitted input is empty and alerting if so
@@ -22,14 +32,15 @@ const addTask = function() {
     };
 
     taskInput.value = '';  //clear input field
-    addTaskToDOM(taskText); //adding to DOM 
-    saveTaskToLS(taskText); // adding to local storage 
+    
+    saveTaskToLS(taskText, estTime); // adding to local storage
+    addTaskToDOM({text: taskText, time: estTime}); //adding to DOM  
 };
 
-const addTaskToDOM = function(text) {
+const addTaskToDOM = function(taskObject) {
     // creating a new <li> with out task
     const taskToAdd = document.createElement("li");
-    taskToAdd.textContent = text;
+    taskToAdd.textContent = `${taskObject.text}   (est. minutes: ${taskObject.time})`;
 
     // adding css class to a task
     taskToAdd.classList.add("todo-item");
@@ -42,8 +53,14 @@ const addTaskToDOM = function(text) {
         doneButton.remove(); // done tasks dont need a button
         taskToAdd.remove(); //removes the task
         taskToAdd.classList.add("completed"); // adds css styles for completed tasks
-        doneList.appendChild(taskToAdd); // adds the task to "done" list when clicked
-        saveTaskToDoneLS(text); // transferring the task from "ready" local storage to "done"
+        const doneTaskToAdd = document.createElement("li");  // creating a new LI to not show est time
+        doneTaskToAdd.textContent = taskObject.text;
+        doneTaskToAdd.classList.add("todo-item");
+        doneTaskToAdd.classList.add("completed");
+    
+        doneList.appendChild(doneTaskToAdd); // adds the task to "done" list when clicked
+        
+        saveTaskToDoneLS(taskObject.text); // transferring the task from "ready" local storage to "done"
     };
     taskToAdd.appendChild(doneButton);
 
@@ -67,9 +84,9 @@ const addDoneTaskToDOM = function(text) {
 };
 
 // saves to local storage for ready tasks
-const saveTaskToLS = function(text) {
+const saveTaskToLS = function(text, time) {
     const readyTasks = JSON.parse(localStorage.getItem('readyTasks')) || [];
-    readyTasks.push(text);
+    readyTasks.push({text: text, time: time});
     localStorage.setItem('readyTasks', JSON.stringify(readyTasks));
 };
 
