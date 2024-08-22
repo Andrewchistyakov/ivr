@@ -24,6 +24,8 @@ const addTask = function() {
     const taskText = taskInput.value;
     const estTimeInp = document.getElementById("time-estimate");
     const estTime = estTimeInp.value;
+    const complInp = document.getElementById("compl-selector");
+    const compl = complInp.value;
     
 
     if (taskText === '') { // checking if the submitted input is empty and alerting if so
@@ -33,8 +35,8 @@ const addTask = function() {
 
     taskInput.value = '';  //clear input field
     
-    saveTaskToLS(taskText, estTime); // adding to local storage
-    addTaskToDOM({text: taskText, time: estTime}); //adding to DOM  
+    saveTaskToLS(taskText, estTime, compl); // adding to local storage
+    addTaskToDOM({text: taskText, time: estTime, complexity: compl}); //adding to DOM  
 };
 
 const addTaskToDOM = function(taskObject) {
@@ -44,6 +46,22 @@ const addTaskToDOM = function(taskObject) {
 
     // adding css class to a task
     taskToAdd.classList.add("todo-item");
+
+    //creating a complexity indicator
+    const compl_indicator = document.createElement("h4");
+    if (taskObject.complexity === "routine") {  //deciding which indicator to show
+        compl_indicator.textContent = "🟣";
+    } else if (taskObject.complexity === "easy") {
+        compl_indicator.textContent = "🔵";
+    } else if (taskObject.complexity === "normal") {
+        compl_indicator.textContent = "🟢";
+    } else if (taskObject.complexity === "hard") {
+        compl_indicator.textContent = "🟡";
+    } else if (taskObject.complexity === "very hard") {
+        compl_indicator.textContent = "🔴";
+    }
+    compl_indicator.classList.add("compl-indicator");
+    taskToAdd.appendChild(compl_indicator);
 
     // creating a button to done tasks
     const doneButton = document.createElement('button'); 
@@ -84,9 +102,9 @@ const addDoneTaskToDOM = function(text) {
 };
 
 // saves to local storage for ready tasks
-const saveTaskToLS = function(text, time) {
+const saveTaskToLS = function(text, time, complexity) {
     const readyTasks = JSON.parse(localStorage.getItem('readyTasks')) || [];
-    readyTasks.push({text: text, time: time});
+    readyTasks.push({text: text, time: time, complexity: complexity});
     localStorage.setItem('readyTasks', JSON.stringify(readyTasks));
 };
 

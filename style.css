@@ -52,6 +52,7 @@ body {
 
 .todo-item {
     display: flex;
+    position:relative;
     justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
@@ -146,6 +147,16 @@ button:hover {
     font-size: medium;
     width: 30%;
     border-radius: 7px;
+}
+
+.compl-indicator {
+    position: absolute; /* Positioning relative to the parent */
+    right: 80px; /* Adjust this value to position it to the left */
+    top: 0;
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    align-items: center;
 }
 
 @media (max-width: 600px) {
