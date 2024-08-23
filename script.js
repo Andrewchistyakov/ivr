@@ -16,8 +16,24 @@ window.onload = function() {
     doneTasks.forEach(task => {
         addDoneTaskToDOM(task);
     });
+
+    // removing task input field on load
+    const taskInputDiv = document.getElementById("task-inputfield");
+    taskInputDiv.remove();
+    const showInputFieldButton = document.createElement("button");
+    console.log(showInputFieldButton);
+    console.log(showInputFieldButton.id);
+    showInputFieldButton.id = "show-input-field-button";
+    const list = document.getElementById('todo-list');
+    showInputFieldButton.addEventListener('click', () => {
+        list.appendChild(taskInputDiv);
+        showInputFieldButton.remove();
+    });
+    showInputFieldButton.textContent = "Add new task";
+    list.appendChild(showInputFieldButton);
 };
 
+// submit button handler
 const addTask = function() {
     //getting user input
     const taskInput = document.getElementById("taskInput");
@@ -34,6 +50,18 @@ const addTask = function() {
     };
 
     taskInput.value = '';  //clear input field
+
+    const taskInputDiv = document.getElementById("task-inputfield");
+    const showInputFieldButton = document.createElement("button");
+    showInputFieldButton.classList.add("show-input-field-button");
+    showInputFieldButton.textContent = "Add new task";
+    const list = document.getElementById('todo-list');
+    taskInputDiv.remove();  // hiding input field
+    list.appendChild(showInputFieldButton);   // adding buttton to show task input field
+    showInputFieldButton.addEventListener('click', () => {
+        list.appendChild(taskInputDiv);
+        showInputFieldButton.remove();
+    });
     
     saveTaskToLS(taskText, estTime, compl); // adding to local storage
     addTaskToDOM({text: taskText, time: estTime, complexity: compl}); //adding to DOM  
