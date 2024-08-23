@@ -62,7 +62,9 @@ body {
     border-radius: 7px;
 }
 
-
+#show-input-field-button {
+    margin-left: 10px;
+}
 
 .todo-item:hover {
     background-color: #f9f9f9;
