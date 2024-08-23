@@ -43,6 +43,7 @@ const addTaskToDOM = function(taskObject) {
     // creating a new <li> with out task
     const taskToAdd = document.createElement("li");
     taskToAdd.textContent = `${taskObject.text}   (est. minutes: ${taskObject.time})`;
+    const taskDone = false;  // later will indicate that task is done and no need to add it to the lis
 
     // adding css class to a task
     taskToAdd.classList.add("todo-item");
@@ -66,19 +67,58 @@ const addTaskToDOM = function(taskObject) {
     // creating a button to done tasks
     const doneButton = document.createElement('button'); 
     const doneList = document.getElementById('done-tasks'); 
-    doneButton.textContent = 'DONE';
+    doneButton.textContent = 'Start';
     doneButton.onclick = () => {
         doneButton.remove(); // done tasks dont need a button
-        taskToAdd.remove(); //removes the task
-        taskToAdd.classList.add("completed"); // adds css styles for completed tasks
-        const doneTaskToAdd = document.createElement("li");  // creating a new LI to not show est time
-        doneTaskToAdd.textContent = taskObject.text;
-        doneTaskToAdd.classList.add("todo-item");
-        doneTaskToAdd.classList.add("completed");
+
+        //creating a stopwatch for time measurement when user starts doing a task
+        const stopwatch = document.createElement("div");
+        stopwatch.classList.add("stopwatch");
+        const timeDisplay = document.createElement("h3");
+        timeDisplay.classList.add('time-display');
+        const finishButton = document.createElement("button");
+        finishButton.classList.add('finish-button');
+        stopwatch.appendChild(timeDisplay);
+        stopwatch.appendChild(finishButton);
+        taskToAdd.appendChild(stopwatch);
+
+        let timer;
+        let seconds = 0;
+        function updateTime() {
+            seconds++;
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            timeDisplay.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+        timer = setInterval(updateTime, 1000);  // starting a timer, updates every 1000ms
+
+        finishButton.addEventListener('click', () => {
+            clearInterval(timer);  // stopping timer
+            timer = null;
+            
+            //getting stopwatch finish value
+            const timeSpent = timeDisplay.textContent;
+            seconds = 0;
+
+            // TODO: implement countRating() here
+            
+            
+            taskToAdd.remove(); //removes the task
+            taskToAdd.classList.add("completed"); // adds css styles for completed tasks
+            const doneTaskToAdd = document.createElement("li");  // creating a new LI to not show est time
+            doneTaskToAdd.textContent = taskObject.text;
+            doneTaskToAdd.classList.add("todo-item");
+            doneTaskToAdd.classList.add("completed");
     
-        doneList.appendChild(doneTaskToAdd); // adds the task to "done" list when clicked
+            doneList.appendChild(doneTaskToAdd); // adds the task to "done" list when clicked
+            
+            saveTaskToDoneLS(taskObject.text); // transferring the task from "ready" local storage to "done"
+        })
+
+
+
         
-        saveTaskToDoneLS(taskObject.text); // transferring the task from "ready" local storage to "done"
     };
     taskToAdd.appendChild(doneButton);
 
@@ -112,7 +152,7 @@ const saveTaskToLS = function(text, time, complexity) {
 const saveTaskToDoneLS = function(tsktxt) {
     //delete from "ready" LS
     let readyTasks = JSON.parse(localStorage.getItem('readyTasks')) || [];
-    readyTasks = readyTasks.filter(task => task !== tsktxt);
+    readyTasks = readyTasks.filter(task => task.text !== tsktxt);
     localStorage.setItem('readyTasks', JSON.stringify(readyTasks));
 
     //add to "done" LS

@@ -159,6 +159,18 @@ button:hover {
     align-items: center;
 }
 
+.stopwatch {
+
+}
+
+.time-display {
+
+}
+
+.finish-button {
+    
+}
+
 @media (max-width: 600px) {
     .todo-container {
         width: 90%;
