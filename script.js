@@ -70,6 +70,7 @@ const addTaskToDOM = function(taskObject) {
     doneButton.textContent = 'Start';
     doneButton.onclick = () => {
         doneButton.remove(); // done tasks dont need a button
+        compl_indicator.remove();  // not to naezhat on buttons :)
 
         //creating a stopwatch for time measurement when user starts doing a task
         const stopwatch = document.createElement("div");
@@ -78,8 +79,13 @@ const addTaskToDOM = function(taskObject) {
         timeDisplay.classList.add('time-display');
         const finishButton = document.createElement("button");
         finishButton.classList.add('finish-button');
+        finishButton.textContent = "finish";
+        const cancelButton = document.createElement("button");
+        cancelButton.classList.add('cancel-stopwatch');
+        cancelButton.textContent = 'cancel'
         stopwatch.appendChild(timeDisplay);
         stopwatch.appendChild(finishButton);
+        stopwatch.appendChild(cancelButton);
         taskToAdd.appendChild(stopwatch);
 
         let timer;
@@ -114,6 +120,14 @@ const addTaskToDOM = function(taskObject) {
             doneList.appendChild(doneTaskToAdd); // adds the task to "done" list when clicked
             
             saveTaskToDoneLS(taskObject.text); // transferring the task from "ready" local storage to "done"
+        });
+        cancelButton.addEventListener('click', () => {
+            clearInterval(timer);  // stopping timer
+            timer = null;
+
+            stopwatch.remove();
+            taskToAdd.appendChild(compl_indicator);
+            taskToAdd.appendChild(doneButton);
         })
 
 

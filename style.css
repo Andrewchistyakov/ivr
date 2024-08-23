@@ -160,15 +160,25 @@ button:hover {
 }
 
 .stopwatch {
-
+    display: flex;
+    align-items: center;
 }
 
 .time-display {
-
+    margin: 5px;
 }
 
 .finish-button {
+    margin-right: 3px;
+}
+
+.cancel-stopwatch {
+    background-color: red;
     
+}
+
+.cancel-stopwatch:hover {
+    background-color: rgb(158, 0, 0);
 }
 
 @media (max-width: 600px) {
