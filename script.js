@@ -150,6 +150,36 @@ const addTaskToDOM = function(taskObject) {
             doneTaskToAdd.textContent = taskObject.text;
             doneTaskToAdd.classList.add("todo-item");
             doneTaskToAdd.classList.add("completed");
+
+            // Create a form element
+            const form = document.createElement('form');
+            form.setAttribute('id', 'mark-form');
+
+            // Create a label
+            const label = document.createElement('label');
+            label.setAttribute('for', 'textInput');
+            label.classList.add("label-mark-input")
+            label.textContent = 'Enter the mark:';
+    
+            // Create a text input
+            const markInput = document.createElement('input');
+            markInput.setAttribute('type', 'number');
+            markInput.setAttribute('id', 'mark-input');
+            markInput.setAttribute('required', true);
+
+            // Create a submit button
+            const markSubmitButton = document.createElement('button');
+            markSubmitButton.setAttribute('type', 'submit');
+            markSubmitButton.classList.add("mark-submit");
+            markSubmitButton.textContent = 'Submit';
+            markSubmitButton.setAttribute("onclick", "submitMarkHandler()")
+
+            // Append the label, input, and button to the form
+            form.appendChild(label);
+            form.appendChild(markInput);
+            form.appendChild(markSubmitButton);
+
+            doneTaskToAdd.appendChild(form);
     
             doneList.appendChild(doneTaskToAdd); // adds the task to "done" list when clicked
             
@@ -205,6 +235,8 @@ const addDoneTaskToDOM = function(text) {
     markSubmitButton.setAttribute('type', 'submit');
     markSubmitButton.classList.add("mark-submit");
     markSubmitButton.textContent = 'Submit';
+    form.addEventListener('submit', submitMarkHandler);
+    console.log(markSubmitButton);
 
     // Append the label, input, and button to the form
     form.appendChild(label);
@@ -218,6 +250,19 @@ const addDoneTaskToDOM = function(text) {
     doneTaskList.appendChild(taskToAdd);
 
 };
+
+const submitMarkHandler = function(event) {
+    // Prevent the default form submission behavior
+    event.preventDefault();
+
+    // Get the mark input value
+    const markInput = document.getElementById('mark-input');
+    mark = markInput.value;
+    markInput.value = '';
+
+    // Log the stored mark to the console (or handle it as needed)
+    console.log('Stored Mark:', mark);
+}
 
 const countTaskRating = function(task) {  // TODO
     // R = (M * 7,5) + timeBonus timeBonus = (Te / Tf - 1) * complexityBonus complexityBonus = 250 if hard+, 200 if normal, 150 if easy, 100 if no effort
