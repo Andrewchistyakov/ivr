@@ -14,7 +14,7 @@ window.onload = function() {
 
     const doneTasks = JSON.parse(localStorage.getItem('doneTasks')) || [];
     doneTasks.forEach(task => {
-        addDoneTaskToDOM(task.text);
+        addDoneTaskToDOM(task);
     });
 
     // removing task input field on load
@@ -164,7 +164,7 @@ const addTaskToDOM = function(taskObject) {
             // Create a text input
             const markInput = document.createElement('input');
             markInput.setAttribute('type', 'number');
-            markInput.setAttribute('id', 'mark-input');
+            markInput.setAttribute('class', 'mark-input');
             markInput.setAttribute('required', true);
 
             // Create a submit button
@@ -205,10 +205,10 @@ const addTaskToDOM = function(taskObject) {
     taskList.appendChild(taskToAdd);
 };
 
-const addDoneTaskToDOM = function(text) {
+const addDoneTaskToDOM = function(taskObj) {
     // creating a new <li> with out task
     const taskToAdd = document.createElement("li");
-    taskToAdd.textContent = text;
+    taskToAdd.textContent = taskObj.text;
 
     // adding css class to a task
     taskToAdd.classList.add("todo-item");
@@ -227,7 +227,7 @@ const addDoneTaskToDOM = function(text) {
     // Create a text input
     const markInput = document.createElement('input');
     markInput.setAttribute('type', 'number');
-    markInput.setAttribute('id', 'mark-input');
+    markInput.setAttribute('class', 'mark-input');
     markInput.setAttribute('required', true);
 
     // Create a submit button
@@ -247,7 +247,7 @@ const addDoneTaskToDOM = function(text) {
 
     // finally adding task to the list
     const doneTaskList = document.getElementById("done-tasks");
-    doneTaskList.appendChild(taskToAdd);
+    doneTaskList.insertBefore(taskToAdd, doneTaskList.firstChild);
 
 };
 
@@ -255,13 +255,12 @@ const submitMarkHandler = function(event) {
     // Prevent the default form submission behavior
     event.preventDefault();
 
-    // Get the mark input value
-    const markInput = document.getElementById('mark-input');
-    mark = markInput.value;
-    markInput.value = '';
-
-    // Log the stored mark to the console (or handle it as needed)
-    console.log('Stored Mark:', mark);
+    // Get all mark input values
+    const markInputs = document.querySelectorAll('.mark-input');
+    markInputs.forEach(input => {
+        // Store each mark input value (you can modify this logic as needed)
+        console.log('Stored Mark:', input.value);
+    });
 }
 
 const countTaskRating = function(task) {  // TODO
