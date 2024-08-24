@@ -79,7 +79,6 @@ body {
 }
 
 .todo-item.completed {
-    text-decoration: line-through;
     color: #aaa;
 }
 
@@ -188,6 +187,15 @@ button:hover {
 
 .cancel-stopwatch:hover {
     background-color: rgb(158, 0, 0);
+}
+
+#mark-input {
+    width: 50px;
+    margin: 10px;
+}
+
+#mark-form {
+    
 }
 
 @media (max-width: 600px) {

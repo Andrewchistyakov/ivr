@@ -196,7 +196,7 @@ const addDoneTaskToDOM = function(text) {
     
     // Create a text input
     const markInput = document.createElement('input');
-    markInput.setAttribute('type', 'text');
+    markInput.setAttribute('type', 'number');
     markInput.setAttribute('id', 'mark-input');
     markInput.setAttribute('required', true);
 
