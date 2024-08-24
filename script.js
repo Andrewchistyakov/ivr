@@ -38,10 +38,14 @@ const addTask = function() {
     //getting user input
     const taskInput = document.getElementById("taskInput");
     const taskText = taskInput.value;
-    const estTimeInp = document.getElementById("time-estimate");
-    const estTime = estTimeInp.value;
     const complInp = document.getElementById("compl-selector");
     const compl = complInp.value;   // coplexity: routine or challenging 
+    let estTime;
+    if (compl === "no effort") { estTime = 15 }
+    else if (compl === "easy") { estTime = 30 }
+    else if (compl === "normal") { estTime = 60}
+    else if (compl === "hard") { estTime = 120 }
+    else if (compl === "very hard") { estTime = 180 }
     
 
     if (taskText === '') { // checking if the submitted input is empty and alerting if so
@@ -65,6 +69,7 @@ const addTask = function() {
     
     saveTaskToLS(taskText, estTime, compl); // adding to local storage
     addTaskToDOM({text: taskText, time: estTime, complexity: compl}); //adding to DOM  
+    console.log(estTime)
 };
 
 const addTaskToDOM = function(taskObject) {
@@ -78,15 +83,15 @@ const addTaskToDOM = function(taskObject) {
 
     //creating a complexity indicator
     const compl_indicator = document.createElement("h4");
-    if (taskObject.time === "15") {  //deciding which indicator to show
+    if (taskObject.time === 15) {  //deciding which indicator to show
         compl_indicator.textContent = "🟣";
-    } else if (taskObject.time == "30") {
+    } else if (taskObject.time == 30) {
         compl_indicator.textContent = "🔵";
-    } else if (taskObject.time === "60") {
+    } else if (taskObject.time === 60) {
         compl_indicator.textContent = "🟢";
-    } else if (taskObject.time === "120") {
+    } else if (taskObject.time === 120) {
         compl_indicator.textContent = "🟡";
-    } else if (taskObject.time === "180") {
+    } else if (taskObject.time === 180) {
         compl_indicator.textContent = "🔴";
     }
     compl_indicator.classList.add("compl-indicator");
