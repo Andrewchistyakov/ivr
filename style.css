@@ -57,6 +57,11 @@ body {
     top: 0; /* Optional: Align it to the top */
 }
 
+#done-tasks {
+    display: flex;
+    flex-direction: column;
+}
+
 .todo-item {
     display: flex;
     position:relative;
