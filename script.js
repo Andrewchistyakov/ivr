@@ -184,10 +184,45 @@ const addDoneTaskToDOM = function(text) {
     taskToAdd.classList.add("todo-item");
     taskToAdd.classList.add("completed");
 
+    // Create a form element
+    const form = document.createElement('form');
+    form.setAttribute('id', 'mark-form');
+
+    // Create a label
+    const label = document.createElement('label');
+    label.setAttribute('for', 'textInput');
+    label.classList.add("label-mark-input")
+    label.textContent = 'Enter the mark:';
+    
+    // Create a text input
+    const markInput = document.createElement('input');
+    markInput.setAttribute('type', 'text');
+    markInput.setAttribute('id', 'mark-input');
+    markInput.setAttribute('required', true);
+
+    // Create a submit button
+    const markSubmitButton = document.createElement('button');
+    markSubmitButton.setAttribute('type', 'submit');
+    markSubmitButton.classList.add("mark-submit");
+    markSubmitButton.textContent = 'Submit';
+
+    // Append the label, input, and button to the form
+    form.appendChild(label);
+    form.appendChild(markInput);
+    form.appendChild(markSubmitButton);
+
+    taskToAdd.appendChild(form);
+
     // finally adding task to the list
     const doneTaskList = document.getElementById("done-tasks");
     doneTaskList.appendChild(taskToAdd);
+
 };
+
+const countTaskRating = function(task) {  // TODO
+    // R = (M * 7,5) + timeBonus timeBonus = (Te / Tf - 1) * complexityBonus complexityBonus = 250 if hard+, 200 if normal, 150 if easy, 100 if no effort
+    
+}
 
 // saves to local storage for ready tasks
 const saveTaskToLS = function(text, time, complexity) {
