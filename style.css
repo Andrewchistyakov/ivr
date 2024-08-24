@@ -5,20 +5,28 @@
 }
 
 body {
+    display: flex;
     font-family: 'Arial', sans-serif;
     background-color: #191919;
     color: whitesmoke;
 }
 
+.rating {
+    width: 35%;
+}
+
 .todo-part {
+    width: 65%;
     display: flex;
+    flex-direction: column; 
     align-items: flex-start;
-    flex-wrap: wrap;
+    box-sizing: border-box;
+    position: relative; 
 }
 
 .todo-container {
-    max-width: 800px;
-    margin: 20px auto;
+    max-width: 900px;
+    margin: 20px;
     padding: 20px;
     background: #282A3A;
     border-radius: 8px;
@@ -27,15 +35,15 @@ body {
     
     height: auto;
 
-    width: 60%; /* Set the width to 70% of the viewport */
+    width: 100%; /* Set the width to 70% of the viewport */
    
-    left: 0; /* Align it to the left side */
-    top: 0; /* Optional: Align it to the top */
+    
 }
 
 .done-container {
-    max-width: 600px;
-    margin: 20px auto;
+    width: 100%;
+    max-width: 900px;
+    margin: 20px;
     padding: 20px;
     background: #282A3A;
     border-radius: 8px;
@@ -44,7 +52,6 @@ body {
     
     height: auto;
 
-    width: 30%; /* Set the width to 70% of the viewport */
     
     left: 0; /* Align it to the left side */
     top: 0; /* Optional: Align it to the top */
