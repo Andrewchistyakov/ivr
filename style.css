@@ -190,8 +190,10 @@ button:hover {
 }
 
 #mark-input {
-    width: 50px;
+    width: 40px;
     margin: 10px;
+    border-radius: 10px;
+    text-align: center;
 }
 
 #mark-form {
