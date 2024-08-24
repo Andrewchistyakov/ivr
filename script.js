@@ -14,7 +14,7 @@ window.onload = function() {
 
     const doneTasks = JSON.parse(localStorage.getItem('doneTasks')) || [];
     doneTasks.forEach(task => {
-        addDoneTaskToDOM(task);
+        addDoneTaskToDOM(task.text);
     });
 
     // removing task input field on load
@@ -41,7 +41,7 @@ const addTask = function() {
     const estTimeInp = document.getElementById("time-estimate");
     const estTime = estTimeInp.value;
     const complInp = document.getElementById("compl-selector");
-    const compl = complInp.value;
+    const compl = complInp.value;   // coplexity: routine or challenging 
     
 
     if (taskText === '') { // checking if the submitted input is empty and alerting if so
@@ -70,7 +70,7 @@ const addTask = function() {
 const addTaskToDOM = function(taskObject) {
     // creating a new <li> with out task
     const taskToAdd = document.createElement("li");
-    taskToAdd.textContent = `${taskObject.text}   (est. minutes: ${taskObject.time})`;
+    taskToAdd.textContent = `${taskObject.text}`;
     const taskDone = false;  // later will indicate that task is done and no need to add it to the lis
 
     // adding css class to a task
@@ -78,15 +78,15 @@ const addTaskToDOM = function(taskObject) {
 
     //creating a complexity indicator
     const compl_indicator = document.createElement("h4");
-    if (taskObject.complexity === "routine") {  //deciding which indicator to show
+    if (taskObject.time === "15") {  //deciding which indicator to show
         compl_indicator.textContent = "🟣";
-    } else if (taskObject.complexity === "easy") {
+    } else if (taskObject.time == "30") {
         compl_indicator.textContent = "🔵";
-    } else if (taskObject.complexity === "normal") {
+    } else if (taskObject.time === "60") {
         compl_indicator.textContent = "🟢";
-    } else if (taskObject.complexity === "hard") {
+    } else if (taskObject.time === "120") {
         compl_indicator.textContent = "🟡";
-    } else if (taskObject.complexity === "very hard") {
+    } else if (taskObject.time === "180") {
         compl_indicator.textContent = "🔴";
     }
     compl_indicator.classList.add("compl-indicator");
@@ -132,7 +132,8 @@ const addTaskToDOM = function(taskObject) {
             timer = null;
             
             //getting stopwatch finish value
-            const timeSpent = timeDisplay.textContent;
+            const timeSpentSecs = seconds;
+            console.log(timeSpentSecs);
             seconds = 0;
 
             // TODO: implement countRating() here
@@ -147,7 +148,7 @@ const addTaskToDOM = function(taskObject) {
     
             doneList.appendChild(doneTaskToAdd); // adds the task to "done" list when clicked
             
-            saveTaskToDoneLS(taskObject.text); // transferring the task from "ready" local storage to "done"
+            saveTaskToDoneLS(taskObject.text, timeSpentSecs); // transferring the task from "ready" local storage to "done"
         });
         cancelButton.addEventListener('click', () => {
             clearInterval(timer);  // stopping timer
@@ -191,7 +192,7 @@ const saveTaskToLS = function(text, time, complexity) {
 };
 
 //saves to local storage for done tasks
-const saveTaskToDoneLS = function(tsktxt) {
+const saveTaskToDoneLS = function(tsktxt, spent) {
     //delete from "ready" LS
     let readyTasks = JSON.parse(localStorage.getItem('readyTasks')) || [];
     readyTasks = readyTasks.filter(task => task.text !== tsktxt);
@@ -199,6 +200,6 @@ const saveTaskToDoneLS = function(tsktxt) {
 
     //add to "done" LS
     const doneTasks = JSON.parse(localStorage.getItem('doneTasks')) || [];
-    doneTasks.push(tsktxt);
+    doneTasks.push({text: tsktxt, timeSpent: spent});
     localStorage.setItem('doneTasks', JSON.stringify(doneTasks));
 };
