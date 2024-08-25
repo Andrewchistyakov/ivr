@@ -23,7 +23,7 @@ window.onload = function() {
     const showInputFieldButton = document.createElement("button");
     console.log(showInputFieldButton);
     console.log(showInputFieldButton.id);
-    showInputFieldButton.id = "show-input-field-button";
+    showInputFieldButton.classList.add("show-input-field-button");
     const list = document.getElementById('todo-list');
     showInputFieldButton.addEventListener('click', () => {
         list.appendChild(taskInputDiv);
@@ -181,7 +181,7 @@ const addTaskToDOM = function(taskObject) {
 
             doneTaskToAdd.appendChild(form);
     
-            doneList.appendChild(doneTaskToAdd); // adds the task to "done" list when clicked
+            doneList.insertBefore(doneTaskToAdd, doneList.firstChild);
             
             saveTaskToDoneLS(taskObject.text, timeSpentSecs); // transferring the task from "ready" local storage to "done"
         });
@@ -202,7 +202,7 @@ const addTaskToDOM = function(taskObject) {
 
     // finally adding task to the list
     const taskList = document.getElementById("task-list");
-    taskList.appendChild(taskToAdd);
+    taskList.insertBefore(taskToAdd, taskList.firstChild);
 };
 
 const addDoneTaskToDOM = function(taskObj) {
