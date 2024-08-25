@@ -21,8 +21,6 @@ window.onload = function() {
     const taskInputDiv = document.getElementById("task-inputfield");
     taskInputDiv.remove();
     const showInputFieldButton = document.createElement("button");
-    console.log(showInputFieldButton);
-    console.log(showInputFieldButton.id);
     showInputFieldButton.classList.add("show-input-field-button");
     const list = document.getElementById('todo-list');
     showInputFieldButton.addEventListener('click', () => {
