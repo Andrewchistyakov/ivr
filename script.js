@@ -139,11 +139,17 @@ const addTaskToDOM = function(taskObject) {
 
             // TODO: implement countRating() here
             
+            const doneTaskObj = {
+                text: taskObject.text,
+                timeSpent: timeSpentSecs    ,
+                timeEst: taskObject.time,
+                mark: taskObject.mark 
+            } 
             
             taskToAdd.remove(); //removes the task
             taskToAdd.classList.add("completed"); // adds css styles for completed tasks
             const doneTaskToAdd = document.createElement("li");  // creating a new LI to not show est time
-            doneTaskToAdd.textContent = taskObject.text;
+            doneTaskToAdd.textContent = doneTaskObj.text;
             doneTaskToAdd.classList.add("todo-item");
             doneTaskToAdd.classList.add("completed");
 
@@ -173,12 +179,12 @@ const addTaskToDOM = function(taskObject) {
                 e.preventDefault();
                 const markInput = document.getElementById('mark-input-field');
                 // updateObjectInDoneLocalStorage(taskObj.text, 'mark', markInput.value);
-                taskObj.mark = markInput.value;
+                doneTaskObj.mark = markInput.value;
                 console.log("markinput value :", markInput.value)
-                console.log(taskObj);
-                saveTaskToFinishedLS(taskObj);
+                console.log(doneTaskObj);
+                saveTaskToFinishedLS(doneTaskObj);
                 markInput.value = '';
-                taskToAdd.remove();
+                doneTaskToAdd.remove();
     });
 
             // Append the label, input, and button to the form
@@ -254,10 +260,10 @@ const addDoneTaskToDOM = function(taskObj) {
         e.preventDefault();
         const markInput = document.getElementById('mark-input-field');
         // updateObjectInDoneLocalStorage(taskObj.text, 'mark', markInput.value);
-        taskObj.mark = markInput.value;
+        doneTaskObj.mark = markInput.value;
         console.log("markinput value :", markInput.value)
-        console.log(taskObj);
-        saveTaskToFinishedLS(taskObj);
+        console.log(doneTaskObj);
+        saveTaskToFinishedLS(doneTaskObj);
         markInput.value = '';
         taskToAdd.remove();
     });
