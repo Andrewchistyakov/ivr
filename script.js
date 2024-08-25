@@ -67,7 +67,6 @@ const addTask = function() {
     
     saveTaskToLS(taskText, estTime, compl); // adding to local storage
     addTaskToDOM({text: taskText, time: estTime, complexity: compl}); //adding to DOM  
-    console.log(estTime)
 };
 
 const addTaskToDOM = function(taskObject) {
@@ -136,7 +135,6 @@ const addTaskToDOM = function(taskObject) {
             
             //getting stopwatch finish value
             const timeSpentSecs = seconds;
-            console.log(timeSpentSecs);
             seconds = 0;
 
             // TODO: implement countRating() here
@@ -163,14 +161,25 @@ const addTaskToDOM = function(taskObject) {
             const markInput = document.createElement('input');
             markInput.setAttribute('type', 'number');
             markInput.setAttribute('class', 'mark-input');
+            markInput.setAttribute('id', "mark-input-field")
             markInput.setAttribute('required', true);
 
             // Create a submit button
             const markSubmitButton = document.createElement('button');
-            markSubmitButton.setAttribute('type', 'submit');
+            markSubmitButton.setAttribute('type', 'button');
             markSubmitButton.classList.add("mark-submit");
             markSubmitButton.textContent = 'Submit';
-            markSubmitButton.setAttribute("onclick", "submitMarkHandler()")
+            markSubmitButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                const markInput = document.getElementById('mark-input-field');
+                // updateObjectInDoneLocalStorage(taskObj.text, 'mark', markInput.value);
+                taskObj.mark = markInput.value;
+                console.log("markinput value :", markInput.value)
+                console.log(taskObj);
+                saveTaskToFinishedLS(taskObj);
+                markInput.value = '';
+                taskToAdd.remove();
+    });
 
             // Append the label, input, and button to the form
             form.appendChild(label);
@@ -204,6 +213,13 @@ const addTaskToDOM = function(taskObject) {
 };
 
 const addDoneTaskToDOM = function(taskObj) {
+
+    const doneTaskObj = {
+        text: taskObj.text,
+        timeSpent: taskObj.timeSpent,
+        timeEst: taskObj.timeEst,
+        mark: taskObj.mark 
+    } 
     // creating a new <li> with out task
     const taskToAdd = document.createElement("li");
     taskToAdd.textContent = taskObj.text;
@@ -226,15 +242,25 @@ const addDoneTaskToDOM = function(taskObj) {
     const markInput = document.createElement('input');
     markInput.setAttribute('type', 'number');
     markInput.setAttribute('class', 'mark-input');
+    markInput.setAttribute('id', "mark-input-field")
     markInput.setAttribute('required', true);
 
     // Create a submit button
     const markSubmitButton = document.createElement('button');
-    markSubmitButton.setAttribute('type', 'submit');
+    markSubmitButton.setAttribute('type', 'button');
     markSubmitButton.classList.add("mark-submit");
     markSubmitButton.textContent = 'Submit';
-    form.addEventListener('submit', submitMarkHandler);
-    console.log(markSubmitButton);
+    markSubmitButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        const markInput = document.getElementById('mark-input-field');
+        // updateObjectInDoneLocalStorage(taskObj.text, 'mark', markInput.value);
+        taskObj.mark = markInput.value;
+        console.log("markinput value :", markInput.value)
+        console.log(taskObj);
+        saveTaskToFinishedLS(taskObj);
+        markInput.value = '';
+        taskToAdd.remove();
+    });
 
     // Append the label, input, and button to the form
     form.appendChild(label);
@@ -249,21 +275,39 @@ const addDoneTaskToDOM = function(taskObj) {
 
 };
 
-const submitMarkHandler = function(event) {
-    // Prevent the default form submission behavior
-    event.preventDefault();
+// const submitMarkHandler = function(event) {
+//     // Prevent the default form submission behavior
+//     event.preventDefault();
 
-    // Get all mark input values
-    const markInputs = document.querySelectorAll('.mark-input');
-    markInputs.forEach(input => {
-        // Store each mark input value (you can modify this logic as needed)
-        console.log('Stored Mark:', input.value);
-    });
-}
+//     // Get all mark input values
+//     const markInputs = document.querySelectorAll('.mark-input');
+//     markInputs.forEach(input => {
+//         // Store each mark input value (you can modify this logic as needed)
+//         console.log('Stored Mark:', input.value);
+//     });
+// }
 
 const countTaskRating = function(task) {  // TODO
     // R = (M * 7,5) + timeBonus timeBonus = (Te / Tf - 1) * complexityBonus complexityBonus = 250 if hard+, 200 if normal, 150 if easy, 100 if no effort
     
+}
+
+// func to update values in done LS
+function updateObjectInDoneLocalStorage(objectText, attributeName, newValue) {
+    // Step 1: Retrieve the existing array from local storage
+    let storedData = localStorage.getItem('doneTasks');
+    let myArray = storedData ? JSON.parse(storedData) : [];
+
+    // Step 2: Find the object by id and update the specific attribute
+    const objectToUpdate = myArray.find(obj => obj.text === objectText);
+    console.log(objectToUpdate);
+    if (objectToUpdate) {
+        objectToUpdate[attributeName] = newValue; // Update the attribute
+    }
+    console.log(objectToUpdate);    
+
+    // Step 3: Save the updated array back to local storage
+    localStorage.setItem('doneTasks', JSON.stringify(myArray));
 }
 
 // saves to local storage for ready tasks
@@ -282,6 +326,19 @@ const saveTaskToDoneLS = function(tsktxt, spent) {
 
     //add to "done" LS
     const doneTasks = JSON.parse(localStorage.getItem('doneTasks')) || [];
-    doneTasks.push({text: tsktxt, timeSpent: spent});
+    doneTasks.push({text: tsktxt, timeSpent: spent, timeEst: 0, mark: 0});
     localStorage.setItem('doneTasks', JSON.stringify(doneTasks));
 };
+
+// func to save task after mark is gotten
+const saveTaskToFinishedLS = function(taskObj) {
+    //delete from "done" LS
+    let doneTasks = JSON.parse(localStorage.getItem('doneTasks')) || [];
+    doneTasks = doneTasks.filter(task => task.text !== taskObj.text);
+    localStorage.setItem('doneTasks', JSON.stringify(doneTasks));
+
+    //add to "done" LS
+    const finishedTasks = JSON.parse(localStorage.getItem('finishedTasks')) || [];
+    finishedTasks.push({text: taskObj.text, timeSpent: taskObj.timeSpent, timeEst: taskObj.timeEst, mark: taskObj.mark});
+    localStorage.setItem('finishedTasks', JSON.stringify(finishedTasks));
+}
