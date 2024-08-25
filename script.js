@@ -183,7 +183,7 @@ const addTaskToDOM = function(taskObject) {
     
             doneList.insertBefore(doneTaskToAdd, doneList.firstChild);
             
-            saveTaskToDoneLS(taskObject.text, timeSpentSecs); // transferring the task from "ready" local storage to "done"
+            saveTaskToDoneLS(taskObject.text, timeSpentSecs, taskObject.time); // transferring the task from "ready" local storage to "done"
         });
         cancelButton.addEventListener('click', () => {
             clearInterval(timer);  // stopping timer
@@ -276,7 +276,7 @@ const saveTaskToLS = function(text, time, complexity) {
 };
 
 //saves to local storage for done tasks
-const saveTaskToDoneLS = function(tsktxt, spent) {
+const saveTaskToDoneLS = function(tsktxt, spent, est) {
     //delete from "ready" LS
     let readyTasks = JSON.parse(localStorage.getItem('readyTasks')) || [];
     readyTasks = readyTasks.filter(task => task.text !== tsktxt);
@@ -284,6 +284,6 @@ const saveTaskToDoneLS = function(tsktxt, spent) {
 
     //add to "done" LS
     const doneTasks = JSON.parse(localStorage.getItem('doneTasks')) || [];
-    doneTasks.push({text: tsktxt, timeSpent: spent});
+    doneTasks.push({text: tsktxt, timeSpent: spent, estTime: est});
     localStorage.setItem('doneTasks', JSON.stringify(doneTasks));
 };
