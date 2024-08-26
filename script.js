@@ -1,15 +1,5 @@
-let currentDate;
 // adds tasks from local storage when opening the app
 window.onload = function() {
-    currentDate = new Date();
-    const updateDate = () => {
-        currentDate = new Date();
-        console.log(currentDate.getSeconds());
-    }
-
-    // Call updateDate every second
-    setInterval(updateDate, 1000);
-
     const readyTasks = JSON.parse(localStorage.getItem('readyTasks')) || [];
     readyTasks.forEach(task => {
         addTaskToDOM(task);
@@ -328,18 +318,34 @@ const countTaskRating = function(taskObj) {
     // R = (M * 7,5) + timeBonus timeBonus = (Te / Tf - 1) * complexityBonus complexityBonus = 250 if hard+, 200 if normal, 150 if easy, 100 if no effort
     const mark = taskObj.mark;
     let complBonus;
-    switch (taskObj.timeEst) {
-        case 15:
-            complBonus = 100;
-        case 30:
-            complBonus = 150;
-        case 60:
-            complBonus = 200;
-        case 120:
-            complBonus = 250;
-        case 180:
-            complBonus = 250;
-    }
+    if (taskObj.timeEst == 15) { 
+        complBonus = 100;
+    } else if (taskObj.timeEst == 30) { 
+        complBonus = 150;
+    } else if (taskObj.timeEst == 60) { 
+        complBonus = 200;
+    } else if (taskObj.timeEst == 120) { 
+        complBonus = 250;
+    } else if (taskObj.timeEst == 180) { 
+        complBonus = 250;
+    } 
+    // switch (taskObj.timeEst) {
+    //     case 15:
+    //         complBonus = 100;
+    //         console.log(complBonus);
+    //     case 30:
+    //         complBonus = 150;
+    //         console.log(complBonus);
+    //     case 60:
+    //         complBonus = 200;
+    //         console.log(complBonus);
+    //     case 120:
+    //         complBonus = 250;
+    //         console.log(complBonus);
+    //     case 180:
+    //         complBonus = 250;
+    //         console.log(complBonus);
+    // }
     const effectiveness = taskObj.timeEst / taskObj.timeSpent <= 2 ? taskObj.timeEst / taskObj.timeSpent : 2;
 
     const timeBonus = (effectiveness - 1) * complBonus;
