@@ -1,10 +1,3 @@
-// const { ipcRenderer } = require('electron'); 
-
-// // Function to reload the page
-// function reloadPage() {
-//     ipcRenderer.send('reload-page');
-// }
-
 // adds tasks from local storage when opening the app
 window.onload = function() {
     const readyTasks = JSON.parse(localStorage.getItem('readyTasks')) || [];
@@ -308,9 +301,30 @@ const addDoneTaskToDOM = function(taskObj) {
 
 };
 
-const countTaskRating = function(task) {  // TODO
+// counts task rating 
+const countTaskRating = function(taskObj) { 
     // R = (M * 7,5) + timeBonus timeBonus = (Te / Tf - 1) * complexityBonus complexityBonus = 250 if hard+, 200 if normal, 150 if easy, 100 if no effort
-    
+    const mark = taskObj.mark;
+    let complBonus;
+    switch (taskObj.timeEst) {
+        case 15:
+            complBonus = 100;
+        case 30:
+            complBonus = 150;
+        case 60:
+            complBonus = 200;
+        case 120:
+            complBonus = 250;
+        case 180:
+            complBonus = 250;
+    }
+    const effectiveness = taskObj.timeEst / taskObj.timeSpent <= 2 ? taskObj.timeEst / taskObj.timeSpent : 2;
+
+    const timeBonus = (effectiveness - 1) * complBonus;
+
+    const rating = mark * 7.5 + timeBonus;
+    console.log(`rating = mark (${mark}) * 7,5 (${mark*7.5}) + timeBonus (${timeBonus})`)
+    return rating;
 }
 
 // func to update values in done LS
@@ -358,8 +372,9 @@ const saveTaskToFinishedLS = function(taskObj) {
     doneTasks = doneTasks.filter(task => task.text !== taskObj.text);
     localStorage.setItem('doneTasks', JSON.stringify(doneTasks));
 
-    //add to "done" LS
+    //add to "finished" LS
     const finishedTasks = JSON.parse(localStorage.getItem('finishedTasks')) || [];
-    finishedTasks.push({text: taskObj.text, timeSpent: taskObj.timeSpent, timeEst: taskObj.timeEst, mark: taskObj.mark});
+    const rating = countTaskRating(taskObj);
+    finishedTasks.push({text: taskObj.text, timeSpent: taskObj.timeSpent, timeEst: taskObj.timeEst, mark: taskObj.mark, rating: rating});
     localStorage.setItem('finishedTasks', JSON.stringify(finishedTasks));
 }
