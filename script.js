@@ -1,5 +1,15 @@
+let currentDate;
 // adds tasks from local storage when opening the app
 window.onload = function() {
+    currentDate = new Date();
+    const updateDate = () => {
+        currentDate = new Date();
+        console.log(currentDate.getSeconds());
+    }
+
+    // Call updateDate every second
+    setInterval(updateDate, 1000);
+
     const readyTasks = JSON.parse(localStorage.getItem('readyTasks')) || [];
     readyTasks.forEach(task => {
         addTaskToDOM(task);
