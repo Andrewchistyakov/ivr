@@ -51,6 +51,23 @@ const addTask = function() {
         return;
     };
 
+    // dont let user add task if same one alr exists
+    const readyTasks = JSON.parse(localStorage.getItem('readyTasks')) || [];
+    for (task of readyTasks) {
+        if (taskText == task.text) {
+            alert('this task already exists');
+            return;
+        }
+    }
+
+    let doneTasks = JSON.parse(localStorage.getItem('doneTasks')) || [];
+            for (task of doneTasks) {
+                if (taskText == task.text) {
+                    alert("this task already exists and is done, finish it before adding yhe same one");
+                    return;
+    }
+}
+
     taskInput.value = '';  //clear input field
 
     const taskInputDiv = document.getElementById("task-inputfield");
@@ -193,6 +210,16 @@ const addTaskToDOM = function(taskObject) {
             form.appendChild(markSubmitButton);
 
             doneTaskToAdd.appendChild(form);
+
+            // dont let user finish task if text content already used in done list
+            let doneTasks = JSON.parse(localStorage.getItem('doneTasks')) || [];
+            for (task of doneTasks) {
+                if (doneTaskObj.text == task.text) {
+                    alert("this task already exists");
+                    addTaskToDOM(taskObject);
+                    return;
+    }
+}
     
             doneList.insertBefore(doneTaskToAdd, doneList.firstChild);
             
@@ -280,18 +307,6 @@ const addDoneTaskToDOM = function(taskObj) {
     doneTaskList.insertBefore(taskToAdd, doneTaskList.firstChild);
 
 };
-
-// const submitMarkHandler = function(event) {
-//     // Prevent the default form submission behavior
-//     event.preventDefault();
-
-//     // Get all mark input values
-//     const markInputs = document.querySelectorAll('.mark-input');
-//     markInputs.forEach(input => {
-//         // Store each mark input value (you can modify this logic as needed)
-//         console.log('Stored Mark:', input.value);
-//     });
-// }
 
 const countTaskRating = function(task) {  // TODO
     // R = (M * 7,5) + timeBonus timeBonus = (Te / Tf - 1) * complexityBonus complexityBonus = 250 if hard+, 200 if normal, 150 if easy, 100 if no effort
