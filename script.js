@@ -32,6 +32,8 @@ window.onload = function() {
     });
     showInputFieldButton.textContent = "Add new task";
     list.appendChild(showInputFieldButton);
+
+    pushRatings();
 };
 
 // submit button handler
@@ -211,6 +213,7 @@ const addTaskToDOM = function(taskObject) {
                 saveTaskToFinishedLS(doneTaskObj);
                 markInput.value = '';
                 doneTaskToAdd.remove();
+                pushRatings();
     });
 
             // Append the label, input, and button to the form
@@ -303,6 +306,8 @@ const addDoneTaskToDOM = function(taskObj) {
         saveTaskToFinishedLS(doneTaskObj);
         markInput.value = '';
         taskToAdd.remove();
+
+        pushRatings();
     });
 
     // Append the label, input, and button to the form
@@ -342,6 +347,59 @@ const countTaskRating = function(taskObj) {
     const rating = mark * 7.5 + timeBonus;
     console.log(`rating = mark (${mark}) * 7,5 (${mark*7.5}) + timeBonus (${timeBonus})`)
     return rating;
+}
+
+// func adds ratings to rating div
+const pushRatings = function() {
+    const storedData = localStorage.getItem('finishedTasks');
+    const tasks = storedData ? JSON.parse(storedData) : [];
+    const getTodayrating = function(tasks) {
+        const today = new Date();
+        return tasks.reduce((total, task) => {
+            const completedDate = new Date(task.dateWhenDone);
+            if (completedDate.toDateString() === today.toDateString()) {
+                return total + task.rating;
+            }
+            return total;
+        }, 0);
+    };
+    const todayRating = getTodayrating(tasks);
+
+    const getWeekRating = function(tasks) {
+        const today = new Date();
+        const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+        return tasks.reduce((total, task) => {
+            const completedDate = new Date(task.dateWhenDone);
+            if (completedDate >= startOfWeek) {
+                return total + task.rating;
+            }
+            return total;
+    }, 0);
+    };
+    const weekRating = getWeekRating(tasks);
+
+    const getMonthRating = function(tasks) {
+        const today = new Date();
+        const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        return tasks.reduce((total, task) => {
+            const completedDate = new Date(task.dateWhenDone);
+            if (completedDate >= startOfMonth) {
+                return total + task.rating;
+            }
+            return total;
+    }, 0);
+    };
+    const monthRating = getMonthRating(tasks);
+
+
+    const todayOut = document.getElementById("today-rating");
+    todayOut.textContent = `Today: ${todayRating}`;
+
+    const weekOut = document.getElementById("week-rating");
+    weekOut.textContent = `This week: ${weekRating}`;
+
+    const monthOut = document.getElementById("month-rating");
+    monthOut.textContent = `This month: ${monthRating}`;
 }
 
 // func to update values in done LS
