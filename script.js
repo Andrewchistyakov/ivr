@@ -146,12 +146,18 @@ const addTaskToDOM = function(taskObject) {
             //getting stopwatch finish value
             const timeSpentSecs = seconds;
             seconds = 0;
+            
+            const dateWhenDone = new Date();  // storing date to later count ratings
+            // const yearWhenDone = dateWhenDone.getFullYear();
+            // const monthWhenDone = dateWhenDone.getMonth();
+            // const dayWhenDone = dateWhenDone.getDate();
+            // const dayOfWeekWhenDone = dateWhenDone.getDay();
 
-            // TODO: implement countRating() here
             
             const doneTaskObj = {
+                dateWhenDone: dateWhenDone,
                 text: taskObject.text,
-                timeSpent: timeSpentSecs    ,
+                timeSpent: timeSpentSecs,
                 timeEst: taskObject.time,
                 mark: taskObject.mark 
             } 
@@ -216,7 +222,7 @@ const addTaskToDOM = function(taskObject) {
     
             doneList.insertBefore(doneTaskToAdd, doneList.firstChild);
             
-            saveTaskToDoneLS(taskObject.text, timeSpentSecs, taskObject.time); // transferring the task from "ready" local storage to "done"
+            saveTaskToDoneLS(taskObject.text, timeSpentSecs, taskObject.time, doneTaskObj.dateWhenDone); // transferring the task from "ready" local storage to "done"
         });
         cancelButton.addEventListener('click', () => {
             clearInterval(timer);  // stopping timer
@@ -241,6 +247,7 @@ const addTaskToDOM = function(taskObject) {
 const addDoneTaskToDOM = function(taskObj) {
 
     const doneTaskObj = {
+        dateWhenDone: taskObj.dateWhenDone,
         text: taskObj.text,
         timeSpent: taskObj.timeSpent,
         timeEst: taskObj.timeEst,
@@ -353,7 +360,7 @@ const saveTaskToLS = function(text, time, complexity) {
 };
 
 //saves to local storage for done tasks
-const saveTaskToDoneLS = function(tsktxt, spent, est) {
+const saveTaskToDoneLS = function(tsktxt, spent, est, date) {
     //delete from "ready" LS
     let readyTasks = JSON.parse(localStorage.getItem('readyTasks')) || [];
     readyTasks = readyTasks.filter(task => task.text !== tsktxt);
@@ -361,7 +368,7 @@ const saveTaskToDoneLS = function(tsktxt, spent, est) {
 
     //add to "done" LS
     const doneTasks = JSON.parse(localStorage.getItem('doneTasks')) || [];
-    doneTasks.push({text: tsktxt, timeSpent: spent, estTime: est});
+    doneTasks.push({text: tsktxt, timeSpent: spent, estTime: est, dateWhenDone: date});
     localStorage.setItem('doneTasks', JSON.stringify(doneTasks));
 };
 
@@ -375,6 +382,13 @@ const saveTaskToFinishedLS = function(taskObj) {
     //add to "finished" LS
     const finishedTasks = JSON.parse(localStorage.getItem('finishedTasks')) || [];
     const rating = countTaskRating(taskObj);
-    finishedTasks.push({text: taskObj.text, timeSpent: taskObj.timeSpent, timeEst: taskObj.timeEst, mark: taskObj.mark, rating: rating});
+    finishedTasks.push({
+        text: taskObj.text,
+        timeSpent: taskObj.timeSpent, 
+        timeEst: taskObj.timeEst, 
+        mark: taskObj.mark, 
+        rating: rating, 
+        dateWhenDone: taskObj.dateWhenDone
+    });
     localStorage.setItem('finishedTasks', JSON.stringify(finishedTasks));
 }
