@@ -10,6 +10,14 @@
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
   </head>
   <body>
+    <div class="nav-bar">
+      <div class="task-list-nav" id="task-list-nav">
+        <button class="nav-button-1" id="nav-button-1" onclick="openTasks()">Tasks</button>
+      </div>
+      <div class="stats-nav">
+        <button class="nav-button-2" id="nav-button-2" onclick="alert('already looking on stats')">Stats</button>
+      </div>
+    </div>
     <h1>Stats:</h1>
     <script>
         require('./render.js');

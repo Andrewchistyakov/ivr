@@ -1,4 +1,9 @@
-// const { ipcRenderer } = require('electron');
+const { ipcRenderer } = require('electron');
+
+const statsButton = document.getElementById('stats-nav');
+const showStats = () => {
+    ipcRenderer.send('open-stats');
+};
 
 // adds tasks from local storage when opening the app
 window.onload = function() {

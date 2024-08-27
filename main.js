@@ -10,6 +10,10 @@ function createWindow() {
     win = new BrowserWindow({
         width: 1050,
         height: 750,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+        },
         icon: __dirname + "/img/icon.png"})
 
     win.loadURL(url.format({
@@ -22,12 +26,17 @@ function createWindow() {
 
     win.on('closed', () => win = null);
 
-    // ipcMain.on('open-stats', () => {
-    //     win.loadFile('stats.html');
-    // });
+    // opens stats page when recieves a call
+    ipcMain.on('open-stats', () => {
+        win.loadFile('stats.html');
+    });
+
+    ipcMain.on('open-tasks', () => {
+        win.loadFile('index.html');
+    });
 }
 
 
-app.on('ready', createWindow);
+app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => app.quit());
