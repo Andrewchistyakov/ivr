@@ -22,9 +22,8 @@ function createWindow() {
 
     win.on('closed', () => win = null);
 
-    // // Listen for the reload event from the renderer process
-    // ipcMain.on('reload-page', () => {
-    //     mainWindow.webContents.reload();
+    // ipcMain.on('open-stats', () => {
+    //     win.loadFile('stats.html');
     // });
 }
 
