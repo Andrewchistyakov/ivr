@@ -1,3 +1,5 @@
+// const { ipcRenderer } = require('electron');
+
 // adds tasks from local storage when opening the app
 window.onload = function() {
     const readyTasks = JSON.parse(localStorage.getItem('readyTasks')) || [];
