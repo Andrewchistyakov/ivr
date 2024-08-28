@@ -478,7 +478,7 @@ const saveTaskToFinishedLS = function(taskObj) {
         timeEst: taskObj.timeEst, 
         mark: taskObj.mark, 
         rating: rating, 
-        dateWhenDone: taskObj.dateWhenDone
+        dateWhenDone: taskObj.dateWhenDone.toISOString()
     }); // Send the task to the main process
 
     localStorage.setItem('finishedTasks', JSON.stringify(finishedTasks));
