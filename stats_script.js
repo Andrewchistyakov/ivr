@@ -23,6 +23,8 @@ window.onload = function() {
         };
         const totalTimeSpentMin = totalTimeSpent / 60;
 
+        document.getElementById('total-min').textContent = totalTimeSpentMin + " minutes";
+
         //updating weekly avg
         const weeklyAvgHeader = document.getElementById('avg-weekly');
         weeklyAvgHeader.textContent = `This week: ${countAvgWeek()}`;

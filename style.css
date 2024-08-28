@@ -53,6 +53,15 @@ body {
     border-radius: 8px;
 }
 
+.total {
+    padding-top: 10px;
+}
+
+.rating-stats {
+    width: 25%;
+    margin-top: 50px;
+}
+
 .rating {
     width: 35%;
     margin-top: 50px;
