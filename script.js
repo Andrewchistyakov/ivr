@@ -471,5 +471,15 @@ const saveTaskToFinishedLS = function(taskObj) {
         rating: rating, 
         dateWhenDone: taskObj.dateWhenDone
     });
+
+    ipcRenderer.send('save-task', {
+        text: taskObj.text,
+        timeSpent: taskObj.timeSpent, 
+        timeEst: taskObj.timeEst, 
+        mark: taskObj.mark, 
+        rating: rating, 
+        dateWhenDone: taskObj.dateWhenDone
+    }); // Send the task to the main process
+
     localStorage.setItem('finishedTasks', JSON.stringify(finishedTasks));
 }
