@@ -336,23 +336,7 @@ const countTaskRating = function(taskObj) {
     } else if (taskObj.timeEst == 180) { 
         complBonus = 250;
     } 
-    // switch (taskObj.timeEst) {
-    //     case 15:
-    //         complBonus = 100;
-    //         console.log(complBonus);
-    //     case 30:
-    //         complBonus = 150;
-    //         console.log(complBonus);
-    //     case 60:
-    //         complBonus = 200;
-    //         console.log(complBonus);
-    //     case 120:
-    //         complBonus = 250;
-    //         console.log(complBonus);
-    //     case 180:
-    //         complBonus = 250;
-    //         console.log(complBonus);
-    // }
+    
     const effectiveness = taskObj.timeEst / taskObj.timeSpent <= 2 ? taskObj.timeEst / taskObj.timeSpent : 2;
 
     const timeBonus = (effectiveness - 1) * complBonus;

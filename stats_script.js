@@ -15,5 +15,33 @@ window.onload = function() {
         // Store tasks in a variable
         allTasks = tasks;
         console.log(allTasks);
+
+        // counting total time spent studying
+        let totalTimeSpent = 0;
+        for (let task of allTasks) {
+            totalTimeSpent += task.timeSpent;
+        };
+        const totalTimeSpentMin = totalTimeSpent / 60;
+
+        //updating weekly avg
+        const weeklyAvgHeader = document.getElementById('avg-weekly');
+        weeklyAvgHeader.textContent = `This week: ${countAvgWeek()}`;
     });
 }
+
+// avg ratings counters:
+const countAvgWeek = function() {
+        const thisWeekTasks = allTasks.filter((task) => {
+            const dateDone = new Date(task.dateWhenDone);
+            const today = new Date();
+            const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+            return dateDone >= startOfWeek;
+        });
+        let sum = 0;
+        for (let task of thisWeekTasks) {
+            let rating = task.rating;
+            sum += rating;
+        };
+        return sum / thisWeekTasks.length;
+};
+
