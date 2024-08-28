@@ -26,6 +26,9 @@ window.onload = function() {
         //updating weekly avg
         const weeklyAvgHeader = document.getElementById('avg-weekly');
         weeklyAvgHeader.textContent = `This week: ${countAvgWeek()}`;
+
+        const monthlyAvgHeader = document.getElementById('avg-monthly');
+        monthlyAvgHeader.textContent = `This month: ${countAvgMonth()}`;
     });
 }
 
@@ -43,5 +46,26 @@ const countAvgWeek = function() {
             sum += rating;
         };
         return sum / thisWeekTasks.length;
+};
+
+const countAvgMonth = function() {
+    const thisMonthTasks = allTasks.filter((task) => {
+        const dateDone = new Date(task.dateWhenDone);
+        const today = new Date();
+        
+        // Get the first day of the current month
+        const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        
+        // Check if the task was completed this month
+        return dateDone >= startOfMonth && dateDone < new Date(today.getFullYear(), today.getMonth() + 1, 1);
+    });
+
+    // Calculate the average rating on tasks completed this month
+    let sum = 0;
+    for (let task of thisMonthTasks) {
+        let rating = task.rating;
+        sum += rating;
+    };
+    return sum / thisMonthTasks.length; 
 };
 
