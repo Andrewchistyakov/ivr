@@ -26,6 +26,27 @@ window.onload = function() {
     showInputFieldButton.addEventListener('click', () => {
         list.appendChild(taskInputDiv);
         showInputFieldButton.remove();
+
+        const chooseSubj = document.getElementById('subj-select');
+        const subjects = JSON.parse(localStorage.getItem('subjects')) || [];
+        for (let subject of subjects) {
+            const newSubject = document.createElement('option');
+            newSubject.textContent = subject.subject;
+            console.log(newSubject.textContent)
+            chooseSubj.appendChild(newSubject);
+        }
+        
+        const newSubject = document.createElement('option');
+        const subjInput = document.getElementById('subjInput');
+        document.getElementById('newSubjSubmit').addEventListener('click', () => {
+            const chooseSubj = document.getElementById('subj-select');
+            const newSubject = document.createElement('option');
+            newSubject.textContent = subjInput.value;
+            chooseSubj.appendChild(newSubject);
+            
+            subjects.push({subject: newSubject.textContent});
+            localStorage.setItem('subjects', JSON.stringify(subjects));
+        })
     });
     showInputFieldButton.textContent = "Add new task";
     list.appendChild(showInputFieldButton);
