@@ -55,14 +55,15 @@ db.serialize(() => {
         timeEst INTEGER,
         timeSpent INTEGER,
         rating INTEGER,
-        dateWhenDone TEXT
+        dateWhenDone TEXT,
+        subject TEXT
     )`);
 });
 
 function saveTask(task, callback) {
     db.serialize(() => {
-        const stmt = db.prepare("INSERT INTO finishedTasks (text, mark, timeEst, timeSpent, rating, dateWhenDone) VALUES (?, ?, ?, ?, ?, ?)");
-        stmt.run(task.text, task.mark, task.timeEst, task.timeSpent, task.rating, task.dateWhenDone, (err) => {
+        const stmt = db.prepare("INSERT INTO finishedTasks (text, mark, timeEst, timeSpent, rating, dateWhenDone, subject) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        stmt.run(task.text, task.mark, task.timeEst, task.timeSpent, task.rating, task.dateWhenDone, task.subject, (err) => {
             if (err) {
                 console.error('Error inserting task:', err);
                 callback(err);
