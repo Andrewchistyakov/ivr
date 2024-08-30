@@ -47,6 +47,7 @@ window.onload = function() {
             subjects.push({subject: newSubject.textContent});
             localStorage.setItem('subjects', JSON.stringify(subjects));
         })
+       
     });
     showInputFieldButton.textContent = "Add new task";
     list.appendChild(showInputFieldButton);
@@ -90,6 +91,8 @@ const addTask = function() {
                     return;
     }
 }
+    const chooseSubj = document.getElementById('subj-select');
+    const taskSubj = chooseSubj.value;
 
     taskInput.value = '';  //clear input field
 
@@ -105,8 +108,8 @@ const addTask = function() {
         showInputFieldButton.remove();
     });
     
-    saveTaskToLS(taskText, estTime, compl); // adding to local storage
-    addTaskToDOM({text: taskText, time: estTime, complexity: compl}); //adding to DOM  
+    saveTaskToLS(taskText, estTime, compl, taskSubj); // adding to local storage
+    addTaskToDOM({text: taskText, time: estTime, complexity: compl, subject: taskSubj}); //adding to DOM  
 };
 
 const addTaskToDOM = function(taskObject) {
@@ -189,7 +192,8 @@ const addTaskToDOM = function(taskObject) {
                 text: taskObject.text,
                 timeSpent: timeSpentSecs,
                 timeEst: taskObject.time,
-                mark: taskObject.mark 
+                mark: taskObject.mark,
+                subject: taskObject.subject
             } 
             
             taskToAdd.remove(); //removes the task
@@ -253,7 +257,7 @@ const addTaskToDOM = function(taskObject) {
     
             doneList.insertBefore(doneTaskToAdd, doneList.firstChild);
             
-            saveTaskToDoneLS(taskObject.text, timeSpentSecs, taskObject.time, doneTaskObj.dateWhenDone); // transferring the task from "ready" local storage to "done"
+            saveTaskToDoneLS(taskObject.text, timeSpentSecs, taskObject.time, doneTaskObj.dateWhenDone, taskObject.subject); // transferring the task from "ready" local storage to "done"
         });
         cancelButton.addEventListener('click', () => {
             clearInterval(timer);  // stopping timer
@@ -282,7 +286,8 @@ const addDoneTaskToDOM = function(taskObj) {
         text: taskObj.text,
         timeSpent: taskObj.timeSpent,
         timeEst: taskObj.timeEst,
-        mark: taskObj.mark 
+        mark: taskObj.mark,
+        subject: taskObj.subject
     } 
     // creating a new <li> with out task
     const taskToAdd = document.createElement("li");
@@ -439,14 +444,14 @@ function updateObjectInDoneLocalStorage(objectText, attributeName, newValue) {
 }
 
 // saves to local storage for ready tasks
-const saveTaskToLS = function(text, time, complexity) {
+const saveTaskToLS = function(text, time, complexity, subject) {
     const readyTasks = JSON.parse(localStorage.getItem('readyTasks')) || [];
-    readyTasks.push({text: text, time: time, complexity: complexity});
+    readyTasks.push({text: text, time: time, complexity: complexity, subject: subject});
     localStorage.setItem('readyTasks', JSON.stringify(readyTasks));
 };
 
 //saves to local storage for done tasks
-const saveTaskToDoneLS = function(tsktxt, spent, est, date) {
+const saveTaskToDoneLS = function(tsktxt, spent, est, date, subject) {
     //delete from "ready" LS
     let readyTasks = JSON.parse(localStorage.getItem('readyTasks')) || [];
     readyTasks = readyTasks.filter(task => task.text !== tsktxt);
@@ -454,7 +459,7 @@ const saveTaskToDoneLS = function(tsktxt, spent, est, date) {
 
     //add to "done" LS
     const doneTasks = JSON.parse(localStorage.getItem('doneTasks')) || [];
-    doneTasks.push({text: tsktxt, timeSpent: spent, estTime: est, dateWhenDone: date});
+    doneTasks.push({text: tsktxt, timeSpent: spent, estTime: est, dateWhenDone: date, subject: subject});
     localStorage.setItem('doneTasks', JSON.stringify(doneTasks));
 };
 
@@ -474,7 +479,8 @@ const saveTaskToFinishedLS = function(taskObj) {
         timeEst: taskObj.timeEst, 
         mark: taskObj.mark, 
         rating: rating, 
-        dateWhenDone: taskObj.dateWhenDone
+        dateWhenDone: taskObj.dateWhenDone,
+        subject: taskObj.subject
     });
 
     ipcRenderer.send('save-task', {
@@ -483,7 +489,8 @@ const saveTaskToFinishedLS = function(taskObj) {
         timeEst: taskObj.timeEst, 
         mark: taskObj.mark, 
         rating: rating, 
-        dateWhenDone: taskObj.dateWhenDone.toISOString()
+        dateWhenDone: taskObj.dateWhenDone.toISOString(),
+        subject: taskObj.subject
     }); // Send the task to the main process
 
     localStorage.setItem('finishedTasks', JSON.stringify(finishedTasks));
