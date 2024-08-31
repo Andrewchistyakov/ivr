@@ -58,7 +58,7 @@ body {
 }
 
 .rating-stats {
-    width: 25%;
+    width: 30%;
     margin-top: 50px;
 }
 
@@ -103,6 +103,16 @@ body {
     width: 90%;
     align-items: start;
     padding-top: 10px;
+}
+
+.subj-stat {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+#subj-select-stats {
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .todo-part {
