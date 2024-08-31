@@ -22,8 +22,9 @@ window.onload = function() {
             totalTimeSpent += task.timeSpent;
         };
         const totalTimeSpentMin = totalTimeSpent / 60;
+        const totalTimeOutput = totalTimeSpentMin.toFixed(2);
 
-        document.getElementById('total-min').textContent = totalTimeSpentMin + " minutes";
+        document.getElementById('total-min').textContent = totalTimeOutput + " minutes";
 
         //updating weekly avg
         const weeklyAvgHeader = document.getElementById('avg-weekly');
