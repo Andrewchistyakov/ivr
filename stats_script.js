@@ -29,6 +29,7 @@ window.onload = function() {
         //updating weekly avg
         const weeklyAvgHeader = document.getElementById('avg-weekly');
         weeklyAvgHeader.textContent = `This week: ${countAvgWeek()}`;
+        console.log(countAvgMonth(), countAvgWeek())
 
         const monthlyAvgHeader = document.getElementById('avg-monthly');
         monthlyAvgHeader.textContent = `This month: ${countAvgMonth()}`;

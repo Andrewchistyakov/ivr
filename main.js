@@ -6,7 +6,7 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 
 
 let win;
-const dbPath = path.join(app.getPath('userData'), 'tasks.db');
+const dbPath = path.join(app.getPath('userData'), 'user_tasks.db');
 const db = new sqlite3.Database(dbPath);
 
 function createWindow() {
