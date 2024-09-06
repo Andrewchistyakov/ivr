@@ -48,7 +48,7 @@ app.on('window-all-closed', () => app.quit());
 // Database functions
 db.serialize(() => {
     // Create the tasks table if it doesn't exist
-    db.run(`CREATE TABLE IF NOT EXISTS finishedTasks (
+    db.run(`CREATE TABLE IF NOT EXISTS doneTasks (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         text TEXT NOT NULL,
         mark INTEGER,
@@ -62,7 +62,7 @@ db.serialize(() => {
 
 function saveTask(task, callback) {
     db.serialize(() => {
-        const stmt = db.prepare("INSERT INTO finishedTasks (text, mark, timeEst, timeSpent, rating, dateWhenDone, subject) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        const stmt = db.prepare("INSERT INTO doneTasks (text, mark, timeEst, timeSpent, rating, dateWhenDone, subject) VALUES (?, ?, ?, ?, ?, ?, ?)");
         stmt.run(task.text, task.mark, task.timeEst, task.timeSpent, task.rating, task.dateWhenDone, task.subject, (err) => {
             if (err) {
                 console.error('Error inserting task:', err);
@@ -77,7 +77,7 @@ function saveTask(task, callback) {
 }
 
 function getTasks(callback) {
-    db.all("SELECT * FROM finishedTasks", [], (err, rows) => {
+    db.all("SELECT * FROM doneTasks", [], (err, rows) => {
         if (err) {
             console.error('Error fetching tasks:', err);
             callback([]); // Return an empty array on error

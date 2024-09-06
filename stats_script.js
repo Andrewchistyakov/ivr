@@ -1,5 +1,6 @@
 const { ipcRenderer } = require('electron');
 let allTasks; 
+const subjArr = [];
 
 const statsButton = document.getElementById('task-list-nav');
 const openTasks = () => {
@@ -33,6 +34,18 @@ window.onload = function() {
 
         const monthlyAvgHeader = document.getElementById('avg-monthly');
         monthlyAvgHeader.textContent = `This month: ${countAvgMonth()}`;
+
+        for (let task of allTasks) {
+            subjArr.push(task.subject)
+        }
+        console.log("subjects:", subjArr)
+        for (let subject of subjArr) {
+            const taskSelector = document.getElementById("subj-select-stats")
+            const subSel = document.createElement('option')
+            subSel.textContent = subject
+            taskSelector.appendChild(subSel)
+        }
+        
     });
 }
 
@@ -72,4 +85,8 @@ const countAvgMonth = function() {
     };
     return sum / thisMonthTasks.length; 
 };
+
+const countStatsSubj = function(subject) {
+
+}
 

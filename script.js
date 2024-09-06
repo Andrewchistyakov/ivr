@@ -470,6 +470,14 @@ const saveTaskToFinishedLS = function(taskObj) {
     doneTasks = doneTasks.filter(task => task.text !== taskObj.text);
     localStorage.setItem('doneTasks', JSON.stringify(doneTasks));
 
+    // handling errors with invalid dateWhenDone:
+    const dateValue = new Date(taskObj.dateWhenDone);
+    if (isNaN(dateValue.getTime())) {
+        console.error("Invalid date value:", taskObj.dateWhenDone);
+    } else {
+        taskObj.dateWhenDone = dateValue;
+    }
+
     //add to "finished" LS
     const finishedTasks = JSON.parse(localStorage.getItem('finishedTasks')) || [];
     const rating = countTaskRating(taskObj);
